@@ -101,6 +101,10 @@ const results = circularDepsDetect({
 
 # QA
 
+## How does this tool handle alias paths?
+
+We use `get-tsconfig` to transform ts alias imports, which means you should manually configure `compilerOptions.paths` in the nearest `tsconfig/jsconfig` so that the tool can recognize it correctly, unknown aliases will be dropped.
+
 ## Which reference will be pull out from the files
 
 In a short, it find references like: 
@@ -126,6 +130,7 @@ The analysis of file reference depend on the `alias` configurations you supplied
 
 - The Command Line Tool is based on [commander](https://github.com/tj/commander.js).
 - The circular dependencies analysis algorithm is based on [graph-cycles](https://github.com/grantila/graph-cycles).
+- The typescript paths are transformed by [get-tsconfig](https://github.com/privatenumber/get-tsconfig).
 
 # Issues
 

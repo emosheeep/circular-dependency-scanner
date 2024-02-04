@@ -100,7 +100,11 @@ const results = circularDepsDetect({
 
 # QA
 
-## 那些引用会被提取出来
+## How does this tool handle alias paths?
+
+该工具使用 `get-tsconfig` 来转换代码中的别名路径，你需要在最近的 `tsconfig/jsconfig.json` 中配置 `compilerOptions.paths` 以便工具能正确识别别名，未识别的别名将被丢弃。
+
+## 哪些引用会被提取出来
 
 简单来说，满足以下条件的引用路径会被摘取出来：
 
@@ -125,6 +129,7 @@ export { test }; // got no export source
 
 - 命令行工具基于 [commander](https://github.com/tj/commander.js).
 - 循环依赖分析算法基于 [graph-cycles](https://github.com/grantila/graph-cycles).
+- TS 别名转换基于 [get-tsconfig](https://github.com/privatenumber/get-tsconfig).
 
 # Issues
 

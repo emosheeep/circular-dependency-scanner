@@ -8,6 +8,8 @@ export const extensions = [
   'vue',
   'mjs',
   'cjs',
+  'mts',
+  'cts',
 ] as const;
 
 export type Ext = (typeof extensions)[number];
@@ -38,9 +40,9 @@ export function revertExtension(origin: string) {
 
 const colorize = (filename: string) =>
   chalk[
-    /\.(jsx?)|([mc]js)$/.test(filename)
+    /\.[mc]?jsx?$/.test(filename)
       ? 'yellow'
-      : /\.tsx?$/.test(filename)
+      : /\.[mc]?tsx?$/.test(filename)
         ? 'blue'
         : /\.vue$/.test(filename)
           ? 'green'

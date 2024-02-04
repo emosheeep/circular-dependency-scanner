@@ -3,7 +3,7 @@ import { type Edge, analyzeGraph, FullAnalysisResult } from 'graph-cycles';
 import { path, globby } from 'zx';
 import { fileURLToPath } from 'url';
 import { type TsConfigResult, createPathsMatcher } from 'get-tsconfig';
-import { walkFile } from './ast';
+import { getImportSpecifiers } from './ast';
 import { revertExtension } from './utils';
 
 interface GlobFiles {
@@ -93,10 +93,12 @@ if (!isMainThread) {
       });
 
       const deps: string[] = [];
-      const visitor = (value) =>
-        (value = getRealPathOfSpecifier(filename, value)) && deps.push(value);
 
-      walkFile(filename, { onExportFrom: visitor, onImportFrom: visitor });
+      for (const value of getImportSpecifiers(filename)) {
+        const resolvedPath = getRealPathOfSpecifier(filename, value);
+        resolvedPath && deps.push(resolvedPath);
+      }
+
       entries.push(
         absolute
           ? [filename, deps]
