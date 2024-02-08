@@ -1,11 +1,15 @@
 import { Listr, PRESET_TIMER } from 'listr2';
 import { minimatch } from 'minimatch';
-import { chalk, path } from 'zx';
-import { type TsConfigResult, getTsconfig } from 'get-tsconfig';
-import { type Edge, type FullAnalysisResult } from 'graph-cycles';
+import { chalk, globby, path } from 'zx';
+import { analyzeGraph, type Edge, type FullAnalysisResult } from 'graph-cycles';
 import { logger } from './logger';
-import { extensions } from './utils';
-import { callWorker } from './worker';
+import { extensions, revertExtension } from './utils';
+import { getImportSpecifiers } from './ast';
+import {
+  type TsConfigResult,
+  getTsconfig,
+  createPathsMatcher,
+} from 'get-tsconfig';
 
 export interface DetectOptions {
   /**
@@ -20,7 +24,7 @@ export interface DetectOptions {
   absolute?: boolean;
   /**
    * Glob patterns to exclude from matches.
-   * @default ['node_modules']
+   * @default node_modules/.git/dist
    */
   ignore?: string[];
   /**
@@ -51,7 +55,7 @@ export async function circularDepsDetect(
 
   /* ----------- Parameters pre-handle start ----------- */
 
-  ignore = [...new Set([...ignore, '**/node_modules/**'])];
+  ignore = [...new Set([...ignore, '**/{.git,node_modules,dist}/**'])];
 
   /* ------------ Parameters pre-handle end ------------ */
 
@@ -74,8 +78,6 @@ export async function circularDepsDetect(
     logger.info(`Config file detected: ${chalk.cyan(tsconfig.path)}`);
   }
 
-  const ctx: TaskCtx = { entries: [], result: [], files: [] };
-
   const runner = new Listr<TaskCtx>(
     [
       {
@@ -85,9 +87,8 @@ export async function circularDepsDetect(
             {
               title: 'Wait a moment...',
               task: async (ctx, task) => {
-                const files = await callWorker({
-                  exec: 'glob-files',
-                  pattern: globPattern,
+                const files = await globby(globPattern, {
+                  absolute: true,
                   cwd,
                   ignore,
                 });
@@ -99,22 +100,37 @@ export async function circularDepsDetect(
       },
       {
         title: 'Pulling out import specifiers from files...',
-        rendererOptions: { bottomBar: 1 },
-        task: async (ctx, task) => {
-          ctx.entries = await callWorker(
-            {
-              exec: 'pull-out',
-              cwd,
-              absolute,
-              tsconfig,
-              files: ctx.files,
-            },
-            {
-              onProgress(filename, index, total) {
-                task.output = `${index + 1}/${total} - ${filename}`;
-              },
-            },
-          );
+        rendererOptions: { outputBar: 1 },
+        task: async ({ files, entries }, task) => {
+          const pathMatcher = tsconfig && createPathsMatcher(tsconfig);
+
+          const getRealPathOfSpecifier = (
+            filename: string,
+            specifier: string,
+          ) =>
+            revertExtension(
+              specifier.startsWith('.')
+                ? path.resolve(path.posix.dirname(filename), specifier)
+                : pathMatcher?.(specifier)[0] ?? specifier,
+            );
+
+          for (const [i, filename] of files.entries()) {
+            task.output = `${i + 1}/${files.length} - ${filename}`;
+
+            const relFileName = path.relative(cwd, filename);
+            const deps: string[] = [];
+
+            for (const value of getImportSpecifiers(filename)) {
+              const resolvedPath = getRealPathOfSpecifier(filename, value);
+              resolvedPath && deps.push(resolvedPath);
+            }
+
+            entries.push(
+              absolute
+                ? [filename, deps]
+                : [relFileName, deps.map((v) => path.relative(cwd, v))],
+            );
+          }
         },
       },
       {
@@ -124,10 +140,7 @@ export async function circularDepsDetect(
             {
               title: 'Wait a moment...',
               task: async (ctx, task) => {
-                let result = await callWorker({
-                  exec: 'analyze',
-                  entries: ctx.entries,
-                });
+                let result = analyzeGraph(ctx.entries).cycles;
 
                 if (filter) {
                   const matcher = minimatch.filter(filter);
@@ -145,6 +158,7 @@ export async function circularDepsDetect(
       },
     ],
     {
+      ctx: { entries: [], result: [], files: [] },
       rendererOptions: {
         collapseSubtasks: false,
         timer: PRESET_TIMER,
@@ -152,7 +166,6 @@ export async function circularDepsDetect(
     },
   );
 
-  await runner.run(ctx);
-
-  return ctx.result;
+  const { result } = await runner.run();
+  return result;
 }

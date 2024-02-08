@@ -38,7 +38,7 @@ program
     'output the analysis into specified json file.',
   )
   .option('-i, --ignore <patterns...>', 'glob patterns to exclude matches.', [
-    '**/node_modules/**',
+    '**/{.git,node_modules,dist}/**',
   ])
   .option('-t, --throw', "exit with code 1 when cycles're found.", false)
   .action(async (cwd, options) => {
