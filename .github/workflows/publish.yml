@@ -2,6 +2,7 @@
 name: Release Package
 
 on:
+  workflow_dispatch:
   pull_request:
     types:
       - closed
@@ -14,7 +15,7 @@ permissions:
 
 jobs:
   release-package:
-    if: github.event.pull_request.merged
+    if: github.event.pull_request.merged || github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -34,3 +35,5 @@ jobs:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
         with:
           publish: npx changeset publish
+          commit: "chore: versioning package"
+          title: "chore:versioning package"

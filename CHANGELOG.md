@@ -1,3 +1,12 @@
+# circular-dependency-scanner
+
+## 2.2.0
+
+### Minor Changes
+
+- 7426bc6: feat: use @ast-grep/napi to simplify imports extraction logic
+- fix: progress is gone
+
 # 2.1.0
 
 - feat(cli): parse tsconfig/jsconfig to get alias.
