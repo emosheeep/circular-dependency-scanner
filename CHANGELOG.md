@@ -1,5 +1,11 @@
 # circular-dependency-scanner
 
+## 2.2.1
+
+### Patch Changes
+
+- chore: update dependencies
+
 ## 2.2.0
 
 ### Minor Changes

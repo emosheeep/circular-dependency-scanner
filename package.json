@@ -1,9 +1,9 @@
 {
   "name": "circular-dependency-scanner",
-  "version": "2.2.0",
+  "version": "2.2.1",
   "type": "module",
   "description": "Out-of-box and zero configuration circular dependencies detector, with both JavaScript API and Command Line Tool.",
-  "author": "秦旭洋 <qinxuyang@bytedance.com>",
+  "author": "情绪羊 <emosheep@qq.com>",
   "packageManager": "pnpm@8.15.1",
   "license": "MIT",
   "bin": {
@@ -44,9 +44,9 @@
     "versions": "changeset version"
   },
   "dependencies": {
-    "@ast-grep/napi": "^0.18.1",
-    "@vue/compiler-sfc": "^3.4.19",
-    "commander": "^11.1.0",
+    "@ast-grep/napi": "^0.19.3",
+    "@vue/compiler-sfc": "^3.4.21",
+    "commander": "^12.0.0",
     "get-tsconfig": "^4.7.2",
     "graph-cycles": "^3.0.0",
     "listr2": "^8.0.2",
@@ -60,10 +60,10 @@
     "@changesets/cli": "^2.27.1",
     "@commitlint/cli": "^18.6.1",
     "@commitlint/config-conventional": "^18.6.2",
-    "@types/node": "^20.11.19",
+    "@types/node": "^20.11.24",
     "@typescript-eslint/eslint-plugin": "^6.21.0",
     "@typescript-eslint/parser": "^6.21.0",
-    "eslint": "^8.56.0",
+    "eslint": "^8.57.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-config-standard": "^17.1.0",
     "eslint-define-config": "^2.1.0",
