@@ -1,5 +1,12 @@
 # circular-dependency-scanner
 
+## 2.2.2
+
+### Patch Changes
+
+- fix: `@vue/compiler-sfc` loaded error at some situations.
+- chore: update dependencies
+
 ## 2.2.1
 
 ### Patch Changes
