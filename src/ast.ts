@@ -1,9 +1,9 @@
 import { fs } from 'zx';
 import { tsx } from '@ast-grep/napi';
-import sfc from '@vue/compiler-sfc';
+import { parse } from '@vue/compiler-sfc';
 
 function getScriptContentFromVue(filename: string) {
-  const { descriptor: result } = sfc.parse(fs.readFileSync(filename, 'utf-8'));
+  const { descriptor: result } = parse(fs.readFileSync(filename, 'utf-8'));
   const { script, scriptSetup } = result;
   const scriptNode = script || scriptSetup;
   return scriptNode?.content;
