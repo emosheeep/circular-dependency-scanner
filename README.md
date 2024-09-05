@@ -95,6 +95,11 @@ const results = circularDepsDetect({
    * @default ['node_modules']
    */
   filter?: string;
+  /**
+   * Exclude pure type-references when calculating circles.
+   * @default false
+   */
+  excludeTypes?: boolean;
 });
 
 ```
@@ -107,7 +112,7 @@ We use `get-tsconfig` to transform ts alias imports, which means you should manu
 
 ## Which reference will be pull out from the files
 
-In a short, it find references like: 
+In a short, it find references like:
 
 ```ts
 import test from './test'; // got './test'
@@ -118,7 +123,32 @@ export * from './test'; // got './test'
 export { test }; // got no export source
 ```
 
-If some of the circles it found make no sense, you can use `--filter` option to screen out.
+Pure type-references will be dropped if `excludeTypes` is set `true`:
+
+```ts
+// import statement
+import * as a from './import * as a'; // ✅
+import type * as a from './import type * as a';
+
+import a from './import a'; // ✅
+import type a from './import type a';
+import type { a } from './import type { a }';
+import { type a } from './import { type a }';
+
+import { type a, b } from './import { type a, b }'; // ✅
+
+// export statement
+export * from './export *'; // ✅
+export * as a from './export * as a' // ✅
+export type * from './export type *';
+export type * as a from './export type * as a';
+
+export type { a } from './export type { a }';
+export { type a } from './export { type a }';
+export { type a, b } from './export { type a, b }'; // ✅
+```
+
+Screen out circles that make sense by `--filter` option.
 
 ## Running at monorepo
 

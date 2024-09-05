@@ -32,6 +32,11 @@ export interface DetectOptions {
    * @default ['node_modules']
    */
   filter?: string;
+  /**
+   * Exclude pure type-references when calculating circles.
+   * @default false
+   */
+  excludeTypes?: boolean;
 }
 
 interface TaskCtx {
@@ -51,6 +56,7 @@ export async function circularDepsDetect(
     ignore = [],
     absolute = false,
     filter,
+    excludeTypes = false,
   } = options || ({} as DetectOptions);
 
   /* ----------- Parameters pre-handle start ----------- */
@@ -111,7 +117,7 @@ export async function circularDepsDetect(
             revertExtension(
               specifier.startsWith('.')
                 ? path.resolve(path.posix.dirname(filename), specifier)
-                : pathMatcher?.(specifier)[0] ?? specifier,
+                : (pathMatcher?.(specifier)[0] ?? specifier),
             );
 
           for (const [i, filename] of files.entries()) {
@@ -120,7 +126,7 @@ export async function circularDepsDetect(
             const relFileName = path.relative(cwd, filename);
             const deps: string[] = [];
 
-            for (const value of getImportSpecifiers(filename)) {
+            for (const value of getImportSpecifiers(filename, excludeTypes)) {
               const resolvedPath = getRealPathOfSpecifier(filename, value);
               resolvedPath && deps.push(resolvedPath);
             }

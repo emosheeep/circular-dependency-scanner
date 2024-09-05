@@ -4,8 +4,8 @@
 ![weekly downloads](https://img.shields.io/npm/dw/circular-dependency-scanner)
 ![license](https://img.shields.io/npm/l/circular-dependency-scanner)
 
-开箱即用循环依赖检测器，内置了 JavaScript API 和命令行工具两种使用方式，支持我们常用的所有文件类型，如 `.js，.jsx，.ts，.tsx，.mjs，.cjs，.vue`。 
- 
+开箱即用循环依赖检测器，内置了 JavaScript API 和命令行工具两种使用方式，支持我们常用的所有文件类型，如 `.js，.jsx，.ts，.tsx，.mjs，.cjs，.vue`。
+
 从文件中取出 `import/require/export` 路径，并使用路径别名配置（alias）将其还原为真实路径（如果有别名的话），然后计算其中的循环引用关系并输出。
 
 [English](./README.md) | 中文
@@ -94,15 +94,20 @@ const results = circularDepsDetect({
    * @default ['node_modules']
    */
   filter?: string;
+  /**
+   * Exclude pure type-references when calculating circles.
+   * @default false
+   */
+  excludeTypes?: boolean;
 });
 
 ```
 
 # QA
 
-## How does this tool handle alias paths?
+## 如何处理 alias 引用?
 
-该工具使用 `get-tsconfig` 来转换代码中的别名路径，你需要在最近的 `tsconfig/jsconfig.json` 中配置 `compilerOptions.paths` 以便工具能正确识别别名，未识别的别名将被丢弃。
+该工具使用 `get-tsconfig` 来转换代码中的别名路径，你需要在距离文件最近的 `tsconfig/jsconfig.json` 中配置 `compilerOptions.paths` 以便工具能正确识别 alias 别名，未识别出别名的引用路径将被丢弃。
 
 ## 哪些引用会被提取出来
 
@@ -117,11 +122,36 @@ export * from './test'; // got './test'
 export { test }; // got no export source
 ```
 
-如果有的环没有意义，可以通过设置 `--filter` 选项进行筛选。
+如果设置了 `excludeTypes: true`，那么纯类型引用将被丢弃，例如：
+
+```ts
+// import statement
+import * as a from './import * as a'; // ✅
+import type * as a from './import type * as a';
+
+import a from './import a'; // ✅
+import type a from './import type a';
+import type { a } from './import type { a }';
+import { type a } from './import { type a }';
+
+import { type a, b } from './import { type a, b }'; // ✅
+
+// export statement
+export * from './export *'; // ✅
+export * as a from './export * as a' // ✅
+export type * from './export type *';
+export type * as a from './export type * as a';
+
+export type { a } from './export type { a }';
+export { type a } from './export { type a }';
+export { type a, b } from './export { type a, b }'; // ✅
+```
+
+另外还可以通过设置 `--filter` 选项对已经提取出来的环进行筛选。
 
 ## Monorepo 下运行
 
-对文件引用的分析依赖于您提供的别名（alias）配置。因此，如果您在 monorepo 根目录下运行此命令，您可能会发现**一些不同的项目可能包含相同的别名配置**，这将导致结果不可靠。 
+对文件引用的分析依赖于您提供的别名（alias）配置。因此，如果您在 monorepo 根目录下运行此命令，您可能会发现**一些不同的项目可能包含相同的别名配置**，这将导致结果不可靠。
 
 **如果你想分析多个项目，请逐个执行**。
 
