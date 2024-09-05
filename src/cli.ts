@@ -29,6 +29,10 @@ program
   .argument('[path]', 'command execute path. (default: process.cwd())')
   .option('--filter <pattern>', 'glob pattern to filter output circles.')
   .option(
+    '--exclude-types',
+    'exclude pure type-references when calculating circles.',
+  )
+  .option(
     '--absolute',
     'print absolute path instead. usually use with editor which can quickly jump to the file.',
     false,
