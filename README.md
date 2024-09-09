@@ -13,6 +13,7 @@ English | [中文](./README.zh_CN.md)
 # Features
 
 - 📦 All file types support.
+- 🗑 Support dropping pure TS type references.
 - 💡 Friendly Command Line Tool.
 - 🛠️ Fully Typed JavaScript APIs and Prompts.
 - 🌩 Tiny, Pretty, Fast and Reliable.
@@ -65,6 +66,7 @@ ds --absolute # print absolute path.
 ds --ignore output dist node_modules # path to ignore.
 ds --output circles.json # output analysis into specified file.
 ds --throw # exit with code 1 when cycles're found.
+ds --exclude-type # exclude pure type-references when calculating circles.
 ```
 
 # JavaScript API

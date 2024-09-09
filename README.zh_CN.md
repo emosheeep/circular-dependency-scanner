@@ -13,6 +13,7 @@
 # 特性
 
 - 📦 支持常用的所有类型文件类型。
+- 🗑 支持剔除 TS 纯类型引用。
 - 💡 提供命令行工具，同时具备友好的控制台输出。
 - 🛠️ 提供 JavaScript API，同时具备良好的类型提示。
 - 🌩 小巧、精致、快速、可靠。
@@ -64,6 +65,7 @@ ds --absolute # print absolute path.
 ds --ignore output dist node_modules # path to ignore.
 ds --output circles.json # output analysis into specified file.
 ds --throw # exit with code 1 when cycles're found.
+ds --exclude-type # exclude pure type-references when calculating circles.
 ```
 
 # JavaScript API
