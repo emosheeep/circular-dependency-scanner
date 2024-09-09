@@ -1,5 +1,11 @@
 # circular-dependency-scanner
 
+## 2.3.0
+
+### Minor Changes
+
+- feat: exclude pure type-references when calculating circles. closed [#4](https://github.com/emosheeep/circular-dependency-scanner/issues/4)
+
 ## 2.2.2
 
 ### Patch Changes
