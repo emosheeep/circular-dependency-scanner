@@ -33,6 +33,10 @@ const mockedFilePath = mockFile(
   import type a from './import type a';
   import type { a } from './import type { a }';
   import { type a } from './import { type a }';
+  import { a } from './import { a }'; // ✅
+  import { a as b } from './import { a as b }'; // ✅
+  import { type a as b } from './import { type a as b }';
+  import type { a as b } from './import type { a as b }';
 
   import type from './import type'; // ✅
   import type type from './import type type';
@@ -45,24 +49,24 @@ const mockedFilePath = mockFile(
   // export statement
   export * from './export *'; // ✅
   export*from './export*'; // ✅
-  export * as a from './export * as a' // ✅
-  export*as a from './export*as a' // ✅
+  export * as a from './export * as a'; // ✅
+  export*as a from './export*as a'; // ✅
+  export { a } from './export { a }'; // ✅
+  export { type a } from './export { type a }';
+  export type { a } from './export type { a }';
+  export { type a, b } from './export { type a, b }'; // ✅
 
   export type * from './export type *';
   export type*from './export type*';
   export type * as a from './export type * as a';
   export type*as a from './export type*as a';
-
-  export type { a } from './export type { a }';
-  export { type a } from './export { type a }';
+  export { type } from './export { type }';
   export { type type } from './export { type type }';
-
-  export { type a, b } from './export { type a, b }'; // ✅
+  export type { type } from './export type { type }';
 
   // ⚠️ ast-grep's bug
-  // export type { type } from './export type { type }';
-  // export { type a, type } from './export { type a, type }'; // ✅
   // export { type } from './export { type }'; // ✅
+  // export { type a, type } from './export { type a, type }'; // ✅
   `,
 );
 
@@ -80,6 +84,10 @@ it('total references', () => {
     './import type a',
     './import type { a }',
     './import { type a }',
+    './import { a }',
+    './import { a as b }',
+    './import { type a as b }',
+    './import type { a as b }',
     './import type',
     './import type type',
     './import type { type }',
@@ -90,14 +98,17 @@ it('total references', () => {
     './export*',
     './export * as a',
     './export*as a',
+    './export { a }',
+    './export { type a }',
+    './export type { a }',
+    './export { type a, b }',
     './export type *',
     './export type*',
     './export type * as a',
     './export type*as a',
-    './export type { a }',
-    './export { type a }',
+    './export { type }',
     './export { type type }',
-    './export { type a, b }',
+    './export type { type }',
   ]);
 });
 
@@ -110,6 +121,8 @@ it('exclude types', () => {
     './import * as a',
     './import*as a',
     './import a',
+    './import { a }',
+    './import { a as b }',
     './import type',
     './import { type a, b }',
     './import { type a, type }',
@@ -117,6 +130,7 @@ it('exclude types', () => {
     './export*',
     './export * as a',
     './export*as a',
+    './export { a }',
     './export { type a, b }',
   ]);
 });
