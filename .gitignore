@@ -3,3 +3,5 @@ dist
 types
 .idea
 .DS_Store
+target
+wasm

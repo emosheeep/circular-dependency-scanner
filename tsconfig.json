@@ -2,7 +2,7 @@
   "compilerOptions": {
     "target": "esnext",
     "module": "esnext",
-    "moduleResolution": "node",
+    "moduleResolution": "bundler",
     "strict": true,
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
@@ -11,7 +11,6 @@
     "allowSyntheticDefaultImports": true,
     "noImplicitAny": false,
     "outDir": "dist",
-    "baseUrl": ".",
     "rootDir": "src",
     "types": ["node", "vitest/globals"],
     "lib": ["esnext"],
