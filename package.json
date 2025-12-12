@@ -7,13 +7,14 @@
   "packageManager": "pnpm@9.9.0",
   "license": "MIT",
   "bin": {
-    "ds": "dist/cli.js"
+    "ds": "dist/cli.mjs"
   },
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "main": "dist/index.mjs",
+  "types": "dist/index.d.mts",
   "files": [
     "dist",
     "types",
+    "rust",
     "CHANGELOG.md",
     "README.md",
     "README.zh_CN.md"
@@ -32,14 +33,18 @@
     "javascript",
     "ecmascript",
     "circular-dependency",
-    "cli"
+    "cli",
+    "napi-rs",
+    "rust",
+    "wasm"
   ],
   "scripts": {
     "prepare": "husky install",
     "prepublishOnly": "npm run test && npm run build",
     "lint": "eslint . --fix --ext .js,.ts",
-    "build": "tsup",
-    "watch": "tsup --watch",
+    "build": "tsdown",
+    "build:wasm": "wasm-pack build --release -t nodejs -d wasm",
+    "watch": "tsdown --watch",
     "changeset": "changeset",
     "versions": "changeset version",
     "test": "vitest",
@@ -76,7 +81,7 @@
     "husky": "^8.0.3",
     "lint-staged": "^15.2.10",
     "prettier": "^3.3.3",
-    "tsup": "^8.2.4",
+    "tsdown": "^0.17.3",
     "vitest": "^2.0.5"
   }
 }

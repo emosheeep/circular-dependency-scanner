@@ -1,7 +1,7 @@
 import { Listr, PRESET_TIMER } from 'listr2';
 import { minimatch } from 'minimatch';
 import { chalk, globby, path } from 'zx';
-import { analyzeGraph, type Edge, type FullAnalysisResult } from 'graph-cycles';
+import { analyzeGraph } from './worker';
 import { logger } from './logger';
 import { extensions, revertExtension } from './utils';
 import { getImportSpecifiers } from './ast';
@@ -41,8 +41,8 @@ export interface DetectOptions {
 
 interface TaskCtx {
   files: string[];
-  entries: Edge[];
-  result: FullAnalysisResult['cycles'];
+  entries: [string, string[]][];
+  result: string[][];
 }
 
 /**
@@ -146,7 +146,7 @@ export async function circularDepsDetect(
             {
               title: 'Wait a moment...',
               task: async (ctx, task) => {
-                let result = analyzeGraph(ctx.entries).cycles;
+                let result = await analyzeGraph(ctx.entries);
 
                 if (filter) {
                   const matcher = minimatch.filter(filter);
