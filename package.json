@@ -1,24 +1,11 @@
 {
   "name": "circular-dependency-scanner",
-  "version": "2.3.0",
   "type": "module",
+  "version": "2.3.0",
+  "packageManager": "pnpm@10.24.0",
   "description": "Out-of-box and zero configuration circular dependencies detector, with both JavaScript API and Command Line Tool.",
   "author": "情绪羊 <emosheep@qq.com>",
-  "packageManager": "pnpm@9.9.0",
   "license": "MIT",
-  "bin": {
-    "ds": "dist/cli.mjs"
-  },
-  "main": "dist/index.mjs",
-  "types": "dist/index.d.mts",
-  "files": [
-    "dist",
-    "types",
-    "rust",
-    "CHANGELOG.md",
-    "README.md",
-    "README.zh_CN.md"
-  ],
   "repository": {
     "type": "github",
     "url": "https://github.com/emosheeep/circular-dependency-scanner"
@@ -38,50 +25,56 @@
     "rust",
     "wasm"
   ],
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "bin": {
+    "ds": "dist/cli.js"
+  },
+  "files": [
+    "CHANGELOG.md",
+    "README.md",
+    "README.zh_CN.md",
+    "dist",
+    "rust",
+    "types"
+  ],
+  "engines": {
+    "node": ">=18.20.0"
+  },
   "scripts": {
-    "prepare": "husky install",
+    "prepare": "husky",
     "prepublishOnly": "npm run test && npm run build",
     "lint": "eslint . --fix --ext .js,.ts",
-    "build": "tsdown",
-    "build:wasm": "wasm-pack build --release -t nodejs -d wasm",
-    "watch": "tsdown --watch",
+    "build": "rslib build",
+    "build:wasm": "wasm-pack build --release -t bundler -d wasm",
+    "watch": "rslib build --watch",
     "changeset": "changeset",
     "versions": "changeset version",
     "test": "vitest",
     "test:watch": "vitest --watch"
   },
   "dependencies": {
-    "@ast-grep/napi": "^0.27.1",
-    "@vue/compiler-sfc": "^3.5.3",
-    "commander": "^12.1.0",
-    "get-tsconfig": "^4.8.0",
-    "graph-cycles": "^3.0.0",
-    "listr2": "^8.2.4",
+    "@ast-grep/napi": "^0.40.1",
+    "@vue/compiler-sfc": "^3.5.25",
+    "commander": "^14.0.2",
+    "get-tsconfig": "^4.13.0",
+    "listr2": "^9.0.5",
     "minimatch": "^9.0.5",
     "node-cleanup": "^2.1.2",
-    "typescript": "^5.5.4",
-    "update-notifier": "^7.3.0",
-    "zx": "^8.1.5"
+    "typescript": "^5.9.3",
+    "update-notifier": "^7.3.1",
+    "zx": "^8.8.5"
   },
   "devDependencies": {
-    "@changesets/cli": "^2.27.8",
-    "@commitlint/cli": "^18.6.1",
-    "@commitlint/config-conventional": "^18.6.3",
-    "@types/node": "^20.16.5",
-    "@typescript-eslint/eslint-plugin": "^6.21.0",
-    "@typescript-eslint/parser": "^6.21.0",
-    "eslint": "^8.57.0",
-    "eslint-config-prettier": "^9.1.0",
-    "eslint-config-standard": "^17.1.0",
-    "eslint-define-config": "^2.1.0",
-    "eslint-plugin-import": "^2.30.0",
-    "eslint-plugin-n": "^16.6.2",
-    "eslint-plugin-prettier": "^5.2.1",
-    "eslint-plugin-promise": "^6.6.0",
-    "husky": "^8.0.3",
-    "lint-staged": "^15.2.10",
-    "prettier": "^3.3.3",
-    "tsdown": "^0.17.3",
-    "vitest": "^2.0.5"
+    "@antfu/eslint-config": "^6.6.1",
+    "@changesets/cli": "^2.29.8",
+    "@commitlint/cli": "^20.2.0",
+    "@commitlint/config-conventional": "^20.2.0",
+    "@rslib/core": "^0.18.4",
+    "@types/node": "^25.0.1",
+    "eslint": "^9.39.2",
+    "husky": "^9.1.7",
+    "lint-staged": "^16.2.7",
+    "vitest": "^4.0.15"
   }
 }

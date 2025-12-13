@@ -1,22 +1,22 @@
 {
   "compilerOptions": {
     "target": "esnext",
+    "lib": ["esnext"],
+    "rootDir": "src",
     "module": "esnext",
     "moduleResolution": "bundler",
-    "strict": true,
-    "skipLibCheck": true,
-    "skipDefaultLibCheck": true,
-    "resolveJsonModule": true,
-    "allowJs": true,
-    "allowSyntheticDefaultImports": true,
-    "noImplicitAny": false,
-    "outDir": "dist",
-    "rootDir": "src",
-    "types": ["node", "vitest/globals"],
-    "lib": ["esnext"],
     "paths": {
       "@/*": ["./src/*"]
-    }
+    },
+    "resolveJsonModule": true,
+    "types": ["node", "vitest/globals"],
+    "allowJs": true,
+    "strict": true,
+    "noImplicitAny": false,
+    "outDir": "dist",
+    "allowSyntheticDefaultImports": true,
+    "skipDefaultLibCheck": true,
+    "skipLibCheck": true
   },
   "include": ["src"],
   "exclude": ["node_modules"]

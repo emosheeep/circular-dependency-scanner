@@ -1,10 +1,10 @@
 #!/usr/bin/env node
-import { fs, chalk } from 'zx';
 import { program } from 'commander';
-import updateNotifier from 'update-notifier';
 import nodeCleanup from 'node-cleanup';
-import { circularDepsDetect, printCircles, logger } from './index';
-import { description, version, name } from '../package.json';
+import updateNotifier from 'update-notifier';
+import { chalk, fs } from 'zx';
+import { description, name, version } from '../package.json';
+import { circularDepsDetect, logger, printCircles } from './index';
 
 const startAt = Date.now();
 nodeCleanup((exitCode) =>
@@ -22,8 +22,7 @@ program
   .hook('preAction', () =>
     updateNotifier({ pkg: { name, version } }).notify({
       isGlobal: true,
-    }),
-  );
+    }),);
 
 program
   .argument('[path]', 'command execute path. (default: process.cwd())')
@@ -44,7 +43,7 @@ program
   .option('-i, --ignore <patterns...>', 'glob patterns to exclude matches.', [
     '**/{.git,node_modules,dist}/**',
   ])
-  .option('-t, --throw', "exit with code 1 when cycles're found.", false)
+  .option('-t, --throw', 'exit with code 1 when cycles\'re found.', false)
   .action(async (cwd, options) => {
     const { output, throw: isThrow, ...rest } = options;
     const cycles = await circularDepsDetect({
@@ -52,7 +51,8 @@ program
       cwd,
     });
 
-    if (!cycles.length) return;
+    if (!cycles.length)
+      return;
 
     if (output) {
       fs.writeFileSync(
@@ -62,7 +62,8 @@ program
       logger.info(
         `Output has been redirected to ${chalk.cyan.underline(output)}`,
       );
-    } else {
+    }
+    else {
       printCircles(cycles);
     }
 
