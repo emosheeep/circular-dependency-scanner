@@ -1,0 +1,10 @@
+{
+  "mode": "pre",
+  "tag": "beta",
+  "initialVersions": {
+    "circular-dependency-scanner": "2.3.0"
+  },
+  "changesets": [
+    "fuzzy-apples-smoke"
+  ]
+}
