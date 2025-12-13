@@ -1,5 +1,5 @@
-import 'zx/globals';
 import { getImportSpecifiers } from './ast';
+import 'zx/globals';
 
 function mockFile(filename: string, fileContent: string): string {
   const filePath = path.resolve(
@@ -70,8 +70,8 @@ const mockedFilePath = mockFile(
   `,
 );
 
-it('total references', () => {
-  const paths = getImportSpecifiers(mockedFilePath);
+it('total references', async () => {
+  const paths = await getImportSpecifiers(mockedFilePath);
   expect(paths).toStrictEqual([
     './require',
     './dynamic-import',
@@ -112,8 +112,8 @@ it('total references', () => {
   ]);
 });
 
-it('exclude types', () => {
-  const paths = getImportSpecifiers(mockedFilePath, true);
+it('exclude types', async () => {
+  const paths = await getImportSpecifiers(mockedFilePath, true);
   expect(paths).toStrictEqual([
     './require',
     './dynamic-import',

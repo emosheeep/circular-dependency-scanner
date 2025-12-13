@@ -1,15 +1,13 @@
+import type { TsConfigResult } from 'get-tsconfig';
+import type { Edge } from './worker';
+import { createPathsMatcher, getTsconfig } from 'get-tsconfig';
 import { Listr, PRESET_TIMER } from 'listr2';
 import { minimatch } from 'minimatch';
 import { chalk, globby, path } from 'zx';
-import { analyzeGraph } from './worker';
+import { getImportSpecifiers } from './ast';
 import { logger } from './logger';
 import { extensions, revertExtension } from './utils';
-import { getImportSpecifiers } from './ast';
-import {
-  type TsConfigResult,
-  getTsconfig,
-  createPathsMatcher,
-} from 'get-tsconfig';
+import { analyzeGraph } from './worker';
 
 export interface DetectOptions {
   /**
@@ -41,7 +39,7 @@ export interface DetectOptions {
 
 interface TaskCtx {
   files: string[];
-  entries: [string, string[]][];
+  entries: Edge[];
   result: string[][];
 }
 
@@ -95,6 +93,7 @@ export async function circularDepsDetect(
               task: async (ctx, task) => {
                 const files = await globby(globPattern, {
                   absolute: true,
+                  gitignore: true,
                   cwd,
                   ignore,
                 });
@@ -126,7 +125,7 @@ export async function circularDepsDetect(
             const relFileName = path.relative(cwd, filename);
             const deps: string[] = [];
 
-            for (const value of getImportSpecifiers(filename, excludeTypes)) {
+            for (const value of await getImportSpecifiers(filename, excludeTypes)) {
               const resolvedPath = getRealPathOfSpecifier(filename, value);
               resolvedPath && deps.push(resolvedPath);
             }

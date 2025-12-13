@@ -17,10 +17,11 @@ export type Ext = (typeof extensions)[number];
 /**
  * Remove trailing  '/' '\'
  * @param {string} str
- * @returns {string}
+ * @returns {string} str
  */
-export const removeTrailingSlash = (str) =>
-  /[/\\]$/.test(str) ? removeTrailingSlash(str.slice(0, -1)) : str;
+export function removeTrailingSlash(str) {
+  return /[/\\]$/.test(str) ? removeTrailingSlash(str.slice(0, -1)) : str;
+}
 
 /**
  * Autocompletion for path suffixes.
@@ -33,13 +34,14 @@ export function revertExtension(origin: string) {
       `${removeTrailingSlash(origin)}.${ext}`,
       path.posix.join(origin, `index.${ext}`),
     ]) {
-      if (fs.existsSync(result)) return result;
+      if (fs.existsSync(result))
+        return result;
     }
   }
 }
 
-const colorize = (filename: string) =>
-  chalk[
+function colorize(filename: string) {
+  return chalk[
     /\.[mc]?jsx?$/.test(filename)
       ? 'yellow'
       : /\.[mc]?tsx?$/.test(filename)
@@ -48,6 +50,7 @@ const colorize = (filename: string) =>
           ? 'green'
           : 'grey'
   ](filename);
+}
 
 export function printCircles(circles: string[][] = []) {
   console.log('\n');
