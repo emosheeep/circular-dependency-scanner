@@ -1,7 +1,7 @@
 {
   "name": "circular-dependency-scanner",
   "type": "module",
-  "version": "2.3.0",
+  "version": "3.0.0-beta.0",
   "packageManager": "pnpm@10.24.0",
   "description": "Out-of-box and zero configuration circular dependencies detector, with both JavaScript API and Command Line Tool.",
   "author": "情绪羊 <emosheep@qq.com>",
@@ -43,7 +43,7 @@
   },
   "scripts": {
     "prepare": "husky",
-    "prepublishOnly": "npm run test && npm run build",
+    "prepublishOnly": "npm run test && npm run build:wasm && npm run build",
     "lint": "eslint . --fix --ext .js,.ts",
     "build": "rslib build",
     "build:wasm": "wasm-pack build --release -t bundler -d wasm",

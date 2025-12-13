@@ -1,5 +1,13 @@
 # circular-dependency-scanner
 
+## 3.0.0-beta.0
+
+### Major Changes
+
+- feat: implement graph detect algorithm with `rust`, save runtime memory and make it much faster
+- feat: re-export the `analyzeGraph` method and `Edge` type
+- chore: update eco-dependencies and refactor infrastructure
+
 ## 2.3.0
 
 ### Minor Changes
