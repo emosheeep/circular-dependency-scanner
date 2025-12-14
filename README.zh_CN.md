@@ -1,5 +1,6 @@
 # circular dependencies scanner ⚡
 
+![Node Current](https://img.shields.io/node/v/circular-dependency-scanner?style=flat)
 [![npm version](https://img.shields.io/npm/v/circular-dependency-scanner)](https://npmjs.com/package/circular-dependency-scanner)
 ![weekly downloads](https://img.shields.io/npm/dw/circular-dependency-scanner)
 ![license](https://img.shields.io/npm/l/circular-dependency-scanner)
@@ -27,15 +28,6 @@
 如果你没有传递 `output` 选项，那么输出内容会直接打印到控制台，其中`ts,js,vue` 文件输出时对应 `蓝色,黄色,绿色`，如下所示：
 
 ![output-snapshot](https://raw.githubusercontent.com/emosheeep/circular-dependency-scanner/HEAD/snapshots/output.png)
-
-# 动机
-
-一方面 NPM 上关于循环依赖检测的工具实在太少了，另一方面，他们或多或少都有一些令人恼火的问题，无法愉快的使用。
-
-1. 不可靠。用过的工具，没有那个能扫全的，猜测主要还是因为它们无法从多种多样的文件中类型中提取出对应的 import/require 路径。
-2. 并非是独立工具。他们通常以  webpack/rollup/vite 插件形式出现，依赖宿主提供的模块关系图分析循环引用，用起来有诸多限制，也很慢。
-
-但现在，你只需要运行 `ds`，我们用到的所有类型的脚本文件 **(.js,.jsx,.ts,.tsx,.mjs,.cjs,.vue)** 都会被 TypeScript API 快速解析，并在控制台使用彩色打印友好地输出循环引用信息。
 
 # 命令行工具（推荐）
 
@@ -105,6 +97,15 @@ const results = circularDepsDetect({
 
 ```
 
+# 动机
+
+一方面 NPM 上关于循环依赖检测的工具实在太少了，另一方面，他们或多或少都有一些令人恼火的问题，无法愉快的使用。
+
+1. 不可靠。用过的工具，没有那个能扫全的，猜测主要还是因为它们无法从多种多样的文件中类型中提取出对应的 import/require 路径。
+2. 并非是独立工具。他们通常以  webpack/rollup/vite 插件形式出现，依赖宿主提供的模块关系图分析循环引用，用起来有诸多限制，也很慢。
+
+但现在，你只需要运行 `ds`，我们用到的所有类型的脚本文件 **(.js,.jsx,.ts,.tsx,.mjs,.cjs,.vue)** 都会被快速解析，并在控制台使用彩色打印友好地输出循环引用信息。
+
 # QA
 
 ## 如何处理 alias 引用?
@@ -160,9 +161,5 @@ export { type a, b } from './export { type a, b }'; // ✅
 # 引用
 
 - 命令行工具基于 [commander](https://github.com/tj/commander.js).
-- 循环依赖分析算法基于 [graph-cycles](https://github.com/grantila/graph-cycles).
+- 循环依赖分析算法基于 [graph-cycles](https://crates.io/crates/graph-cycles).
 - TS 别名转换基于 [get-tsconfig](https://github.com/privatenumber/get-tsconfig).
-
-# Issues
-
-没有哪个工具一开始就是完美的，如果使用过程中遇到问题，欢迎提交 issue。

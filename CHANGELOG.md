@@ -1,14 +1,22 @@
 # circular-dependency-scanner
 
-## 3.0.0-beta.0
+## 3.0.0
 
 ### Major Changes
 
 ## ⚠️ Breaking
 
-Since v3, only support **Node.js v20+**
+Since v3, this tool only support **Node.js v20+**.
 
-## Other
+The **graph detection core algorithm** is implemented in **`rust`** instead, to *save runtime memory and make it much faster*, that is compiled to **`wasm`** and integrated.
+
+Prefer to check CHANGELOG history for more information.
+
+
+## 3.0.0-beta.0
+
+### Major Changes
+
 - perf: implement graph detect algorithm with `rust`, save runtime memory and make it much faster
 - feat: re-export the `analyzeGraph` method and `Edge` type
 - chore: update eco-dependencies and refactor infrastructure
