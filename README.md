@@ -1,5 +1,6 @@
 # circular dependencies scanner ⚡
 
+![Node Current](https://img.shields.io/node/v/circular-dependency-scanner?style=flat)
 [![npm version](https://img.shields.io/npm/v/circular-dependency-scanner)](https://npmjs.com/package/circular-dependency-scanner)
 ![weekly downloads](https://img.shields.io/npm/dw/circular-dependency-scanner)
 ![license](https://img.shields.io/npm/l/circular-dependency-scanner)
@@ -13,7 +14,7 @@ English | [中文](./README.zh_CN.md)
 # Features
 
 - 📦 All file types support.
-- 🗑 Support dropping pure TS type references.
+- 🗑 Optional removal of pure TypeScript type references.
 - 💡 Friendly Command Line Tool.
 - 🛠️ Fully Typed JavaScript APIs and Prompts.
 - 🌩 Tiny, Pretty, Fast and Reliable.
@@ -27,15 +28,6 @@ Here the running example for the `ds -o circles.json` execution:
 The `ts,js,vue` files will be printed directly into console as `blue,yellow,green` as follows if you didn't pass an output filename param:
 
 ![output-snapshot](https://raw.githubusercontent.com/emosheeep/circular-dependency-scanner/HEAD/snapshots/output.png)
-
-# Motivation
-
-On one hand there are few tools, on the other hand there are too many annoyed problems among the exist tools on the market:
-
-1. Not reliable, **usually missed lots of dep-circles**. This is because in common they can't pull out the import/require sources correctly from source files
-2. Not a standalone tool, they often appears as a webpack/rollup/vite plugin, and analyze the relations with help of the module graph created by the plugin's host, which usually under limitations, slow and hard to use.
-
-But now, you just run `ds`, all of the **(.js,.jsx,.ts,.tsx,.mjs,.cjs,.vue)** files under current directory will be parsed directly and fast with TypeScript API, which almost include all file types we used. And then the circles among these files will be printed.
 
 # Command Line Tool (Prefer)
 
@@ -106,6 +98,15 @@ const results = circularDepsDetect({
 
 ```
 
+# Motivation
+
+On one hand there are few tools, on the other hand there are too many annoyed problems among the exist tools on the market:
+
+1. Not reliable, **usually missed lots of dep-circles**. This is because in common they can't pull out the import/require sources correctly from source files
+2. Not a standalone tool, they often appears as a webpack/rollup/vite plugin, and analyze the relations with help of the module graph created by the plugin's host, which usually under limitations, slow and hard to use.
+
+But now, you just run `ds`, all of the **(.js,.jsx,.ts,.tsx,.mjs,.cjs,.vue)** files under current directory will be parsed directly and fast, which almost include all file types we used. And then the circles among these files will be printed.
+
 # QA
 
 ## How does this tool handle alias paths?
@@ -161,7 +162,7 @@ The analysis of file reference depend on the `alias` configurations you supplied
 # Reference
 
 - The Command Line Tool is based on [commander](https://github.com/tj/commander.js).
-- The circular dependencies analysis algorithm is based on [graph-cycles](https://github.com/grantila/graph-cycles).
+- The circular dependencies analysis algorithm is based on [graph-cycles](https://crates.io/crates/graph-cycles).
 - The typescript paths are transformed by [get-tsconfig](https://github.com/privatenumber/get-tsconfig).
 
 # Issues
