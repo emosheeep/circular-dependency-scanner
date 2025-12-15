@@ -59,6 +59,7 @@ export async function circularDepsDetect(
 
   /* ----------- Parameters pre-handle start ----------- */
 
+  cwd = path.resolve(cwd);
   ignore = [...new Set([...ignore, '**/{.git,node_modules,dist}/**'])];
 
   /* ------------ Parameters pre-handle end ------------ */
@@ -66,7 +67,7 @@ export async function circularDepsDetect(
   const globPattern = `**/*.{${extensions.join(',')}}`;
 
   logger.info(
-    `Working directory is ${chalk.underline.cyan(path.resolve(cwd))}`,
+    `Working directory is ${chalk.underline.cyan(cwd)}`,
   );
   logger.info(`Ignored paths: ${ignore.map((v) => chalk.yellow(v)).join(',')}`);
 

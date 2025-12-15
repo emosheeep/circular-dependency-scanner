@@ -1,5 +1,11 @@
 # circular-dependency-scanner
 
+## 3.0.1
+
+### Patch Changes
+
+- fix: the relative path argument caused a globbing failure.
+
 ## 3.0.0
 
 ### Major Changes
@@ -8,10 +14,9 @@
 
 Since v3, this tool only support **Node.js v20+**.
 
-The **graph detection core algorithm** is implemented in **`rust`** instead, to *save runtime memory and make it much faster*, that is compiled to **`wasm`** and integrated.
+The **graph detection core algorithm** is implemented in **`rust`** instead, to _save runtime memory and make it much faster_, that is compiled to **`wasm`** and integrated.
 
 Prefer to check CHANGELOG history for more information.
-
 
 ## 3.0.0-beta.0
 
