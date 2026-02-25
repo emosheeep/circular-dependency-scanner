@@ -35,7 +35,6 @@
     "README.md",
     "README.zh_CN.md",
     "dist",
-    "rust",
     "types"
   ],
   "engines": {
