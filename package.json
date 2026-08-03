@@ -26,7 +26,7 @@
     "wasm"
   ],
   "main": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "types": "dist/types/index.d.ts",
   "bin": {
     "ds": "dist/cli.js"
   },
