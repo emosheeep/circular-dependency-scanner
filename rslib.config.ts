@@ -10,13 +10,13 @@ export default defineConfig({
   },
   output: {
     distPath: {
-      wasm: '.'
-    }
+      wasm: '.',
+    },
   },
   lib: [
     {
       format: 'esm',
-      dts: { distPath: 'dist/types' },
+      dts: true,
       shims: {
         esm: {
           __filename: true,

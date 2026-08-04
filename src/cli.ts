@@ -22,7 +22,8 @@ program
   .hook('preAction', () =>
     updateNotifier({ pkg: { name, version } }).notify({
       isGlobal: true,
-    }),);
+    }),
+  );
 
 program
   .argument('[path]', 'command execute path. (default: process.cwd())')
@@ -43,7 +44,7 @@ program
   .option('-i, --ignore <patterns...>', 'glob patterns to exclude matches.', [
     '**/{.git,node_modules,dist}/**',
   ])
-  .option('-t, --throw', 'exit with code 1 when cycles\'re found.', false)
+  .option('-t, --throw', "exit with code 1 when cycles're found.", false)
   .action(async (cwd, options) => {
     const { output, throw: isThrow, ...rest } = options;
     const cycles = await circularDepsDetect({
@@ -51,8 +52,7 @@ program
       cwd,
     });
 
-    if (!cycles.length)
-      return;
+    if (!cycles.length) return;
 
     if (output) {
       fs.writeFileSync(
@@ -62,8 +62,7 @@ program
       logger.info(
         `Output has been redirected to ${chalk.cyan.underline(output)}`,
       );
-    }
-    else {
+    } else {
       printCircles(cycles);
     }
 

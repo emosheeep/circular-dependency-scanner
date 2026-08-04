@@ -1,4 +1,4 @@
-export { circularDepsDetect, type DetectOptions } from './circle';
-export { logger } from './logger';
-export { printCircles } from './utils';
-export { analyzeGraph, type Edge } from './worker';
+export { circularDepsDetect, type DetectOptions } from './circle.js';
+export { logger } from './logger.js';
+export { printCircles } from './utils.js';
+export { analyzeGraph, type Edge } from './worker.js';

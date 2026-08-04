@@ -18,17 +18,15 @@ jobs:
     if: github.event.pull_request.merged || github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions-rs/toolchain@v1
-        with:
-          toolchain: stable
-          target: wasm32-unknown-unknown
+      - uses: actions/checkout@v6
+      - name: Add Rust WASM target
+        run: rustup target add wasm32-unknown-unknown
       - name: Install wasm-pack
-        run: cargo install wasm-pack && wasm-pack --version
-      - uses: actions/setup-node@v3
+        run: cargo install wasm-pack --locked && wasm-pack --version
+      - uses: actions/setup-node@v6
         with:
-          node-version: 22
-      - uses: pnpm/action-setup@v4
+          node-version: 24
+      - uses: pnpm/action-setup@v6
         with:
           run_install: true
 
@@ -39,6 +37,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
         with:
-          publish: npx changeset publish
+          publish: pnpm exec changeset publish
           commit: 'chore: versioning package'
           title: 'chore:versioning package'

@@ -1,9 +1,10 @@
 {
-  "eslint.trace.server": "verbose",
+  "editor.defaultFormatter": "oxc.oxc-vscode",
   "editor.formatOnSave": true,
   "editor.codeActionsOnSave": {
-    "source.fixAll.eslint": "explicit"
+    "source.fixAll.oxc": "explicit"
   },
+  "rust-analyzer.cargo.target": "wasm32-unknown-unknown",
   "[rust]": {
     "editor.defaultFormatter": "rust-lang.rust-analyzer"
   }
