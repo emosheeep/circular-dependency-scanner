@@ -1,5 +1,13 @@
 # circular-dependency-scanner
 
+## 3.1.0
+
+### Minor Changes
+
+- 220b353: Require Node.js 22.13 or newer, update runtime dependencies, and modernize the development toolchain with Oxlint and Oxfmt.
+
+  Generate declarations at `dist/index.d.ts` so the published `types` entry resolves correctly.
+
 ## 3.0.1
 
 ### Patch Changes
