@@ -41,7 +41,8 @@
   },
   "scripts": {
     "prepare": "husky",
-    "prepublishOnly": "npm run lint:check && npm run format:check && npm test && npm run build",
+    "prepublishOnly": "npm run lint:check && npm run format:check && npm test",
+    "prepack": "npm run build",
     "lint": "oxlint --fix --deny-warnings .",
     "lint:check": "oxlint --deny-warnings .",
     "format": "oxfmt .",
