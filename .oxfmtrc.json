@@ -1,0 +1,17 @@
+{
+  "$schema": "./node_modules/oxfmt/configuration_schema.json",
+  "endOfLine": "lf",
+  "singleQuote": true,
+  "trailingComma": "all",
+  "printWidth": 80,
+  "sortPackageJson": false,
+  "ignorePatterns": [
+    "fixtures/**",
+    "pnpm-lock.yaml",
+    "*.md",
+    "**/*.yml",
+    "**/*.yaml",
+    "*.toml",
+    "Cargo.lock"
+  ]
+}

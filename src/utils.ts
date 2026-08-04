@@ -34,8 +34,7 @@ export function revertExtension(origin: string) {
       `${removeTrailingSlash(origin)}.${ext}`,
       path.posix.join(origin, `index.${ext}`),
     ]) {
-      if (fs.existsSync(result))
-        return result;
+      if (fs.existsSync(result)) return result;
     }
   }
 }
@@ -46,7 +45,7 @@ function colorize(filename: string) {
       ? 'yellow'
       : /\.[mc]?tsx?$/.test(filename)
         ? 'blue'
-        : /\.vue$/.test(filename)
+        : filename.endsWith('.vue')
           ? 'green'
           : 'grey'
   ](filename);

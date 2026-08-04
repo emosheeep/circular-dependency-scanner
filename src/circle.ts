@@ -66,9 +66,7 @@ export async function circularDepsDetect(
 
   const globPattern = `**/*.{${extensions.join(',')}}`;
 
-  logger.info(
-    `Working directory is ${chalk.underline.cyan(cwd)}`,
-  );
+  logger.info(`Working directory is ${chalk.underline.cyan(cwd)}`);
   logger.info(`Ignored paths: ${ignore.map((v) => chalk.yellow(v)).join(',')}`);
 
   const tsconfig = [
@@ -126,9 +124,12 @@ export async function circularDepsDetect(
             const relFileName = path.relative(cwd, filename);
             const deps: string[] = [];
 
-            for (const value of await getImportSpecifiers(filename, excludeTypes)) {
+            for (const value of await getImportSpecifiers(
+              filename,
+              excludeTypes,
+            )) {
               const resolvedPath = getRealPathOfSpecifier(filename, value);
-              resolvedPath && deps.push(resolvedPath);
+              if (resolvedPath) deps.push(resolvedPath);
             }
 
             entries.push(

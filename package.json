@@ -2,7 +2,7 @@
   "name": "circular-dependency-scanner",
   "type": "module",
   "version": "3.0.1",
-  "packageManager": "pnpm@10.24.0",
+  "packageManager": "pnpm@11.20.0",
   "description": "Out-of-box and zero configuration circular dependencies detector, with both JavaScript API and Command Line Tool.",
   "author": "情绪羊 <emosheep@qq.com>",
   "license": "MIT",
@@ -34,16 +34,18 @@
     "CHANGELOG.md",
     "README.md",
     "README.zh_CN.md",
-    "dist",
-    "types"
+    "dist"
   ],
   "engines": {
-    "node": ">=20"
+    "node": ">=22.13"
   },
   "scripts": {
     "prepare": "husky",
-    "prepublishOnly": "npm run test && npm run build",
-    "lint": "eslint . --fix --ext .js,.ts",
+    "prepublishOnly": "npm run lint:check && npm run format:check && npm test && npm run build",
+    "lint": "oxlint --fix --deny-warnings .",
+    "lint:check": "oxlint --deny-warnings .",
+    "format": "oxfmt .",
+    "format:check": "oxfmt --check .",
     "build": "npm run build:wasm && rslib build",
     "build:wasm": "wasm-pack build --release -t bundler -d wasm",
     "watch": "npm run build:wasm && rslib build --watch",
@@ -53,27 +55,27 @@
     "test:watch": "vitest --watch"
   },
   "dependencies": {
-    "@ast-grep/napi": "^0.40.1",
-    "@vue/compiler-sfc": "^3.5.25",
-    "commander": "^14.0.2",
-    "get-tsconfig": "^4.13.0",
-    "listr2": "^9.0.5",
-    "minimatch": "^9.0.5",
-    "node-cleanup": "^2.1.2",
-    "typescript": "^5.9.3",
-    "update-notifier": "^7.3.1",
-    "zx": "^8.8.5"
+    "@ast-grep/napi": "^0.45.0",
+    "@vue/compiler-sfc": "^3.5.40",
+    "commander": "^15.0.0",
+    "get-tsconfig": "^4.14.1",
+    "listr2": "^11.0.0",
+    "minimatch": "^10.2.6",
+    "node-cleanup": "2.1.2",
+    "update-notifier": "7.3.1",
+    "zx": "8.8.5"
   },
   "devDependencies": {
-    "@antfu/eslint-config": "^6.6.1",
-    "@changesets/cli": "^2.29.8",
-    "@commitlint/cli": "^20.2.0",
-    "@commitlint/config-conventional": "^20.2.0",
-    "@rslib/core": "^0.18.4",
-    "@types/node": "^25.0.1",
-    "eslint": "^9.39.2",
-    "husky": "^9.1.7",
-    "lint-staged": "^16.2.7",
-    "vitest": "^4.0.15"
+    "@changesets/cli": "^2.31.1",
+    "@commitlint/cli": "^21.2.1",
+    "@commitlint/config-conventional": "^21.2.0",
+    "@rslib/core": "^0.23.2",
+    "@types/node": "^26.1.2",
+    "husky": "9.1.7",
+    "lint-staged": "^17.3.0",
+    "oxfmt": "0.62.0",
+    "oxlint": "1.77.0",
+    "typescript": "7.0.2",
+    "vitest": "^4.1.10"
   }
 }
