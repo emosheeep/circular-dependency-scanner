@@ -8,6 +8,7 @@ on:
       - master
 
 permissions:
+  id-token: write
   pull-requests: write
   contents: write
 
@@ -27,13 +28,18 @@ jobs:
         with:
           run_install: true
 
+      - name: Read pending release version
+        id: release
+        run: |
+          ./node_modules/.bin/changeset status --output=/dev/stdout |
+            jq -r '(.releases[0].newVersion // empty) | "version=\(.)"' >> "$GITHUB_OUTPUT"
+
       # consume changesets and create pr if it exists, otherwise publish package
       - name: Create Release Pull Request or Publish to npm
         uses: changesets/action@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
         with:
           publish: pnpm exec changeset publish
-          commit: 'chore: versioning package'
-          title: 'chore:versioning package'
+          commit: 'chore: release v${{ steps.release.outputs.version }}'
+          title: 'chore: release v${{ steps.release.outputs.version }}'

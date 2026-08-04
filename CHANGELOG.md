@@ -8,6 +8,10 @@
 
   Generate declarations at `dist/index.d.ts` so the published `types` entry resolves correctly.
 
+### Patch Changes
+
+- Deduplicate repeated dependency edges before cycle analysis so each circular dependency is reported only once.
+
 ## 3.0.1
 
 ### Patch Changes
